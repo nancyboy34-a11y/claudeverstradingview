@@ -23,8 +23,8 @@ Collez ceci dans Claude Code, il s'occupe de tout :
 
 ```
 Configure Claude vs TradingView pour moi.
-Clone le repo dans ~/claudeverstradingview, lance npm install, puis ajoute-le à ma config MCP dans ~/.claude/.mcp.json (fusionne avec les serveurs existants, ne les écrase pas).
-Le bloc de config est : { "mcpServers": { "claudeverstradingview": { "command": "node", "args": ["/Users/VOTRE_USERNAME/claudeverstradingview/src/server.js"] } } } — remplace VOTRE_USERNAME par mon nom d'utilisateur réel.
+Clone https://github.com/nancyboy34-a11y/claudeverstradingview.git dans ~/claudeverstradingview, puis lance npm install.
+Enregistre le serveur MCP au niveau utilisateur avec : claude mcp add --scope user claudeverstradingview -- node <chemin absolu>/claudeverstradingview/src/server.js (utilise mon chemin home réel, ne touche pas aux autres serveurs).
 Ensuite copie rules.example.json vers rules.json et ouvre-le.
 Enfin redémarre et vérifie avec tv_health_check.
 ```
@@ -47,7 +47,7 @@ Ou suivez les étapes manuelles ci-dessous.
 ### 1. Cloner et installer
 
 ```bash
-git clone https://github.com/kaspertrading/claudeverstradingview.git ~/claudeverstradingview
+git clone https://github.com/nancyboy34-a11y/claudeverstradingview.git ~/claudeverstradingview
 cd ~/claudeverstradingview
 npm install
 ```
@@ -79,7 +79,13 @@ scripts\launch_tv_debug.bat
 
 ### 4. Ajouter à Claude Code
 
-Ajoutez dans `~/.claude/.mcp.json` :
+Depuis le dossier du projet :
+
+```bash
+claude mcp add --scope user claudeverstradingview -- node "$(pwd)/src/server.js"
+```
+
+Ou manuellement, dans le `.mcp.json` d'un projet (chemin **absolu** obligatoire) :
 
 ```json
 {
@@ -210,7 +216,7 @@ Aide complète : `claudeverstradingview --help`
 |---|---|
 | `cdp_connected: false` | TradingView n'est pas lancé avec `--remote-debugging-port=9222`. Utilisez le script de lancement. |
 | `ECONNREFUSED` | TradingView non lancé ou port 9222 bloqué |
-| Serveur MCP absent de Claude Code | Vérifiez la syntaxe de `~/.claude/.mcp.json`, redémarrez Claude Code |
+| Serveur MCP absent de Claude Code | Lancez `claude mcp list` pour vérifier l'enregistrement, redémarrez Claude Code |
 | Commande introuvable | Lancez `npm link` depuis le répertoire du projet |
 | "No rules.json found" | `cp rules.example.json rules.json` puis remplissez-le |
 | Données obsolètes | TradingView charge encore, attendez quelques secondes |
